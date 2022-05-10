@@ -3,26 +3,26 @@ import 'dart:convert';
 class City {
   String? name;
   double? lat;
-  double? lng;
+  double? lon;
 
   City({
     this.name,
     this.lat,
-    this.lng,
+    this.lon,
   });
 
   factory City.fromJson(Map<String, dynamic> json) {
     return City(
       name: json['name'],
       lat: json['lat'],
-      lng: json['lng'],
+      lon: json['lon'],
     );
   }
 
   Map<String, dynamic> toJson() => {
         "name": name,
         "lat": lat,
-        "lon": lng,
+        "lon": lon,
       };
 }
 

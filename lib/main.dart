@@ -16,8 +16,7 @@ var options = BaseOptions(
     'units': 'metric'
   },
 );
-
-var CityOptions = BaseOptions(
+var cityOptions = BaseOptions(
   baseUrl: "https://api.openweathermap.org",
   connectTimeout: 5000,
   receiveTimeout: 3000,
@@ -26,13 +25,12 @@ var CityOptions = BaseOptions(
     'appid': 'd339b378743357cd4befe21094335f5d',
   },
 );
-
+Dio dioCity = Dio(cityOptions);
 Dio dio = Dio(options);
-Dio dioCity = Dio(CityOptions);
 
 Future<CurrentWeather> getHttp() async {
   final response = await dio.get("/data/2.5/weather",
-      queryParameters: {'lat': 57.527770, 'lon': 25.389595});
+      queryParameters: {'lat': 57.389595, 'lon': 25.389595});
   return CurrentWeather.fromJson(response.data);
 }
 
@@ -43,12 +41,12 @@ Future<CurrentWeather> getHttp() async {
 //   return rawList.map((e) => City.fromJson(e)).toList();
 // }
 
-Future<List<City>> getHttpCity() async {
-  final response =
-      await dioCity.get("/geo/1.0/direct", queryParameters: {'q': 'Limbazi'});
-  List rawList = response.data as List;
-  return rawList.map((e) => City.fromJson(e)).toList();
-}
+// Future<List<City>> getHttpCity() async {
+//   final response =
+//       await dioCity.get("/geo/1.0/direct", queryParameters: {'q': 'Limbazi'});
+//   List rawList = response.data as List;
+//   return rawList.map((e) => City.fromJson(e)).toList();
+// }
 
 void main() {
   runApp(const MyApp());
@@ -84,7 +82,6 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     futureWeatherData = getHttp();
-    futureCityData = getHttpCity();
   }
 
   @override
@@ -106,21 +103,6 @@ class _HomePageState extends State<HomePage> {
         ),
         body: Column(
           children: [
-            Center(
-              child: FutureBuilder<List<City>>(
-                future: futureCityData,
-                builder: (context, snapshot) {
-                  City? city = snapshot.data?.first;
-                  if (snapshot.hasData) {
-                    print("name ${snapshot.data?.first.name}");
-                    return cityData(city!);
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-                  return const CircularProgressIndicator();
-                },
-              ),
-            ),
             Center(
               child: FutureBuilder<CurrentWeather>(
                 future: futureWeatherData,
@@ -145,8 +127,8 @@ class _HomePageState extends State<HomePage> {
         .push(MaterialPageRoute(builder: (context) => const SecondScreen()));
   }
 
-  void _searchCity() {
-    Navigator.of(context)
+  void _searchCity() async {
+    final coord = await snapshot.data?[index].lat;.of(context)
         .push(MaterialPageRoute(builder: (context) => const SearchCity()));
   }
 
