@@ -12,10 +12,7 @@ class _SecondScreenState extends State<SecondScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Weekly Weather"),
-        backgroundColor: Colors.blue[300],
-      ),
+      appBar: AppBar(title: Text("text")),
       body: Text("text"),
     );
   }
