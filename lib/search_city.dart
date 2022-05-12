@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather_app/api.dart';
 import 'package:weather_app/city.dart';
 import 'package:weather_app/main.dart';
 import 'package:weather_app/weather.dart';
@@ -17,13 +19,7 @@ class _SearchCityState extends State<SearchCity> {
   Future<List<City>>? futureCityData;
   Timer? _timer;
   final textFieldValue = TextEditingController();
-
-  Future<List<City>> getHttpCity(String userInput) async {
-    final response =
-        await dioCity.get("/geo/1.0/direct", queryParameters: {'q': userInput});
-    List rawList = response.data as List;
-    return rawList.map((e) => City.fromJson(e)).toList();
-  }
+  // final prefs = SharedPreferences.getInstance();
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +37,8 @@ class _SearchCityState extends State<SearchCity> {
             _timer?.cancel(); //atcel pieprasijumu
             _timer = Timer(const Duration(seconds: 1), () {
               setState(() {
-                futureCityData =
-                    getHttpCity(value); //pec sekundes izsauc pieprasijumu
+                futureCityData = Api.client
+                    .getHttpCity(value); //pec sekundes izsauc pieprasijumu
               });
             });
           },
@@ -69,6 +65,7 @@ class _SearchCityState extends State<SearchCity> {
 
                       // Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => const HomePage()));
+                      saveCoords(lat!, lon!);
                       Navigator.of(context).pop(SelectedCity(lat, lon));
                     },
                   );
@@ -81,6 +78,12 @@ class _SearchCityState extends State<SearchCity> {
         ),
       ),
     );
+  }
+
+  saveCoords(double lat, double lon) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble("lat", lat);
+    prefs.setDouble("lon", lon);
   }
 }
 
