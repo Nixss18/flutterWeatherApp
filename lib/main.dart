@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/daily_weather_page.dart';
 import 'package:weather_app/prefs.dart';
 import 'package:weather_app/search_city.dart';
 import 'package:weather_app/second_screen.dart';
 import 'package:dio/dio.dart';
+import 'package:weather_app/state_settings.dart';
 import 'package:weather_app/weather.dart';
 import 'package:weather_app/city.dart';
 import 'package:geolocator/geolocator.dart';
@@ -49,7 +51,9 @@ import 'package:geolocator/geolocator.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Prefs.init();
-  runApp(const MyApp());
+
+  runApp(
+      ChangeNotifierProvider(create: (_) => StateSettings(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -57,10 +61,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = context.watch<StateSettings>().isEnabled;
+
     return MaterialApp(
-      theme: ThemeData.light()
-          .copyWith(appBarTheme: AppBarTheme(foregroundColor: Colors.white)),
+      // theme: ThemeData(fontFamily: 'Koulen')
+      //     .copyWith(appBarTheme: AppBarTheme(foregroundColor: Colors.white)),
       title: "Weather App",
+      theme: ThemeData(
+          brightness: isDarkMode ? Brightness.dark : Brightness.light),
       home: DailyWeatherPage(),
     );
   }

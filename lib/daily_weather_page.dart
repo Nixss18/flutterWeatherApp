@@ -8,6 +8,7 @@ import 'package:weather_app/main.dart';
 import 'package:weather_app/prefs.dart';
 import 'package:weather_app/search_city.dart';
 import 'package:weather_app/second_screen.dart';
+import 'package:weather_app/settings_view.dart';
 import 'package:weather_app/weather.dart';
 
 class DailyWeatherPage extends StatefulWidget {
@@ -35,47 +36,68 @@ class _DailyWeatherPageState extends State<DailyWeatherPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("weather app"),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: _searchCity,
-            ),
-            IconButton(
-              icon: Icon(Icons.list),
-              onPressed: _openWeeklyView,
-            ),
-            IconButton(onPressed: _reloadPage, icon: Icon(Icons.replay)),
-            Switch(
-              value: gpsEnabled,
-              onChanged: toggleLocation,
-              activeTrackColor: Colors.lightGreen,
-              activeColor: Colors.green,
-            )
-          ],
-        ),
-        body: (lat != null && lon != null)
-            ? Column(
-                children: [
-                  Center(
-                    child: FutureBuilder<CurrentWeather>(
-                      future: futureWeatherData,
-                      builder: (context, snapshot) {
-                        print(snapshot.data?.iconList?.icons);
-                        CurrentWeather? weather = snapshot.data;
-                        if (snapshot.hasData) {
-                          return weatherData(weather!);
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        }
-                        return const CircularProgressIndicator();
-                      },
-                    ),
+      appBar: AppBar(
+        title: Text("weather app"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: _searchCity,
+          ),
+          // IconButton(
+          //   icon: Icon(Icons.list),
+          //   onPressed: _openWeeklyView,
+          // ),
+          IconButton(onPressed: _reloadPage, icon: Icon(Icons.replay)),
+          Switch(
+            value: gpsEnabled,
+            onChanged: toggleLocation,
+            activeTrackColor: Colors.lightGreen,
+            activeColor: Colors.green,
+          ),
+        ],
+      ),
+      body: (lat != null && lon != null)
+          ? Column(
+              children: [
+                Center(
+                  child: FutureBuilder<CurrentWeather>(
+                    future: futureWeatherData,
+                    builder: (context, snapshot) {
+                      print(snapshot.data?.iconList?.icons);
+                      CurrentWeather? weather = snapshot.data;
+                      if (snapshot.hasData) {
+                        return weatherData(weather!);
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return const CircularProgressIndicator();
+                    },
                   ),
-                ],
-              )
-            : Center(child: Text("SELECT DATA")));
+                ),
+              ],
+            )
+          : Center(child: Text("SELECT DATA")),
+      drawer: Drawer(
+          child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(color: Colors.green),
+            child: Text("Drawer header"),
+          ),
+          ListTile(
+            leading: Icon(Icons.open_in_browser),
+            title: Text("Open weekly view"),
+            onTap: _openWeeklyView,
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("Settings"),
+            onTap: _openSettingView,
+          ),
+        ],
+      )),
+    );
   }
 
   Widget weatherData(CurrentWeather _currentWeather) {
@@ -112,6 +134,11 @@ class _DailyWeatherPageState extends State<DailyWeatherPage> {
   void _openWeeklyView() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const SecondScreen()));
+  }
+
+  void _openSettingView() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const SettingsScreen()));
   }
 
   void _searchCity() async {
