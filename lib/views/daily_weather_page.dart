@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weather_app/api.dart';
-import 'package:weather_app/city.dart';
+import 'package:weather_app/api/api.dart';
+import 'package:weather_app/api/city.dart';
 import 'package:weather_app/main.dart';
-import 'package:weather_app/prefs.dart';
-import 'package:weather_app/search_city.dart';
-import 'package:weather_app/second_screen.dart';
-import 'package:weather_app/settings_view.dart';
-import 'package:weather_app/weather.dart';
+import 'package:weather_app/themes/prefs.dart';
+import 'package:weather_app/search/search_city.dart';
+import 'package:weather_app/views/second_screen.dart';
+import 'package:weather_app/views/settings_view.dart';
+import 'package:weather_app/api/weather.dart';
+
+import '../search/search_city.dart';
 
 class DailyWeatherPage extends StatefulWidget {
   const DailyWeatherPage({Key? key}) : super(key: key);
@@ -18,11 +20,16 @@ class DailyWeatherPage extends StatefulWidget {
   State<DailyWeatherPage> createState() => _DailyWeatherPageState();
 }
 
-class _DailyWeatherPageState extends State<DailyWeatherPage> {
-  late Future<CurrentWeather>? futureWeatherData;
+class _DailyWeatherPageState extends State<DailyWeatherPage>
+    with SingleTickerProviderStateMixin {
+  //tickerProviderp
+  Future<CurrentWeather>? futureWeatherData;
   double? lat, lon;
   late Position position;
   bool gpsEnabled = false;
+  late AnimationController _controller;
+  Alignment _dragAlignment = Alignment.center;
+  CurrentWeather? _weatherData;
 
   @override
   void initState() {
@@ -31,6 +38,9 @@ class _DailyWeatherPageState extends State<DailyWeatherPage> {
     _getInitialData();
     lat = Prefs.instance?.getDouble('lat');
     lon = Prefs.instance?.getDouble('lon');
+
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
   }
 
   @override
@@ -94,6 +104,21 @@ class _DailyWeatherPageState extends State<DailyWeatherPage> {
             leading: Icon(Icons.settings),
             title: Text("Settings"),
             onTap: _openSettingView,
+          ),
+          ExpansionTile(
+            leading: Icon(Icons.star),
+            title: Text("Favorites"),
+            children: <Widget>[
+              ListTile(
+                title: Text("Add new location"),
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    print("${lat}");
+                  },
+                ),
+              )
+            ],
           ),
         ],
       )),
@@ -254,6 +279,15 @@ class _DailyWeatherPageState extends State<DailyWeatherPage> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Error while loading data')));
+    }
+  }
+
+  void _addCityToFavorites() async {
+    await _getValuesFromPrefs();
+    if (lat != null && lon != null) {
+      ListTile(
+        title: Text("${lat}"),
+      );
     }
   }
 }

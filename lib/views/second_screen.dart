@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/api.dart';
+import 'package:weather_app/api/api.dart';
 import 'package:weather_app/main.dart';
-import 'package:weather_app/prefs.dart';
-import 'package:weather_app/weather.dart';
-import 'package:weather_app/weekly_weather.dart';
+import 'package:weather_app/themes/prefs.dart';
+import 'package:weather_app/views/weekly_weather.dart';
+import 'package:weather_app/api/weather.dart';
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({Key? key}) : super(key: key);

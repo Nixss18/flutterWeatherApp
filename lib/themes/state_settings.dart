@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:weather_app/prefs.dart';
+import 'package:weather_app/themes/prefs.dart';
 
 class StateSettings with ChangeNotifier {
   bool isEnabled = Prefs.instance?.getBool("darkModeEnabled") ?? false;

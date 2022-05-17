@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weather_app/api.dart';
-import 'package:weather_app/city.dart';
+import 'package:weather_app/api/api.dart';
+import 'package:weather_app/api/city.dart';
 import 'package:weather_app/main.dart';
-import 'package:weather_app/weather.dart';
+import 'package:weather_app/api/weather.dart';
 
 class SearchCity extends StatefulWidget {
   const SearchCity({Key? key}) : super(key: key);

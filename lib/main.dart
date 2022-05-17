@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weather_app/daily_weather_page.dart';
-import 'package:weather_app/prefs.dart';
-import 'package:weather_app/search_city.dart';
-import 'package:weather_app/second_screen.dart';
+import 'package:weather_app/themes/prefs.dart';
+import 'package:weather_app/search/search_city.dart';
+import 'package:weather_app/views/daily_weather_page.dart';
 import 'package:dio/dio.dart';
-import 'package:weather_app/state_settings.dart';
-import 'package:weather_app/weather.dart';
-import 'package:weather_app/city.dart';
+import 'package:weather_app/themes/state_settings.dart';
+import 'package:weather_app/api/weather.dart';
+import 'package:weather_app/api/city.dart';
 import 'package:geolocator/geolocator.dart';
 
 // var options = BaseOptions(

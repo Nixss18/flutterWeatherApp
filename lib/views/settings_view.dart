@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app/prefs.dart';
-import 'package:weather_app/state_settings.dart';
+import 'package:weather_app/themes/prefs.dart';
+import 'package:weather_app/themes/state_settings.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -21,12 +21,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Material(
           child: ListTile(
             title: Text("Enable Light mode"),
-            // trailing: Switch(
-            //   value: darkModeEnabled,
-            //   onChanged: (_) {},
-            //   activeTrackColor: Colors.lightGreen,
-            //   activeColor: Colors.green,
-            // ),
             trailing: Consumer<StateSettings>(
               builder: (context, value, child) {
                 return Switch(
