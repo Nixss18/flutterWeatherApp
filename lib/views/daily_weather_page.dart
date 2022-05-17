@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/api/api.dart';
 import 'package:weather_app/api/city.dart';
+import 'package:weather_app/favorites/favorite_provide.dart';
 import 'package:weather_app/main.dart';
 import 'package:weather_app/themes/prefs.dart';
 import 'package:weather_app/search/search_city.dart';
@@ -105,21 +107,62 @@ class _DailyWeatherPageState extends State<DailyWeatherPage>
             title: Text("Settings"),
             onTap: _openSettingView,
           ),
-          ExpansionTile(
+          ListTile(
             leading: Icon(Icons.star),
-            title: Text("Favorites"),
-            children: <Widget>[
-              ListTile(
-                title: Text("Add new location"),
-                trailing: IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    print("${lat}");
-                  },
-                ),
-              )
-            ],
-          ),
+            title: Text("favorites"),
+            trailing: IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                _searchCity();
+                Material(
+                  child: ListTile(
+                    title: Consumer<FavoriteCityProvider>(
+                      builder: (context, value, child) {
+                        context
+                            .read<FavoriteCityProvider>()
+                            .addFavoriteCity(_weatherData?.cityName);
+
+                        return ListView(
+                          children: [
+                            ListTile(
+                              title: Text("${value.cities.first}"),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+          // ExpansionTile(
+          //   leading: Icon(Icons.star),
+          //   title: Text("Favorites"),
+          //   children: <Widget>[
+          //     ListTile(
+          //       title: Text("Add new location"),
+          //       trailing: IconButton(
+          //         icon: Icon(Icons.add),
+          //         onPressed: () {
+          //           _searchCity();
+          //           Consumer<FavoriteCityProvider>(
+          //             builder: (context, value, child) {
+          //               context
+          //                   .read<FavoriteCityProvider>()
+          //                   .addFavoriteCity(lat!);
+          //               return Column(
+          //                 children: [
+          //                   ListTile(title: Text("${value.cities.first}")),
+          //                 ],
+          //               );
+          //             },
+          //           );
+          //         },
+          //       ),
+          //     )
+          //   ],
+          // ),
         ],
       )),
     );

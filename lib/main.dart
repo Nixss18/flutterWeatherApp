@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather_app/favorites/favorite_provide.dart';
 import 'package:weather_app/themes/prefs.dart';
 import 'package:weather_app/search/search_city.dart';
 import 'package:weather_app/views/daily_weather_page.dart';
@@ -51,8 +52,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Prefs.init();
 
-  runApp(
-      ChangeNotifierProvider(create: (_) => StateSettings(), child: MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => FavoriteCityProvider()),
+    ChangeNotifierProvider(create: (_) => StateSettings())
+  ], child: MyApp()));
+  // ChangeNotifierProvider(create: (_) => StateSettings(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -61,7 +65,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = context.watch<StateSettings>().isEnabled;
-
     return MaterialApp(
       // theme: ThemeData(fontFamily: 'Koulen')
       //     .copyWith(appBarTheme: AppBarTheme(foregroundColor: Colors.white)),
