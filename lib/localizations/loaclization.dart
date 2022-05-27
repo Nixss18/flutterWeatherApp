@@ -16,7 +16,9 @@ class AppLocalizations {
       "temperature": "Temperature",
       "feelsLike": "Feels like",
       "minTemp": "Min temp",
-      "maxTemp": "Max temp"
+      "maxTemp": "Max temp",
+      "nfcView": "NFC view",
+      "switchesPageTitle": "Switches",
     },
     'lv': {
       "weatherAppTitle": "Laikapstākļu aplikācija",
@@ -25,33 +27,43 @@ class AppLocalizations {
       "feelsLike": "Pēc sajūtas",
       "minTemp": "Minimālā temperatūra",
       "maxTemp": "Maksimālā temperatūra",
+      "nfcView": "NFC skats",
+      "switchesPageTitle": "Slēdži",
     },
   };
 
   static List<String> languages() => _localizedValues.keys.toList();
 
-  String get title {
-    return _localizedValues[locale.languageCode]!['weatherAppTitle']!;
-  }
+  // String get title {
+  //   return _localizedValues[locale.languageCode]!['weatherAppTitle']!;
+  // }
 
-  String get cityName {
-    return _localizedValues[locale.languageCode]!['cityName']!;
-  }
+  // String get cityName {
+  //   return _localizedValues[locale.languageCode]!['cityName']!;
+  // }
 
-  String get temperature {
-    return _localizedValues[locale.languageCode]!['temperature']!;
-  }
+  // String get temperature {
+  //   return _localizedValues[locale.languageCode]!['temperature']!;
+  // }
 
-  String get feelsLike {
-    return _localizedValues[locale.languageCode]!['feelsLike']!;
-  }
+  // String get feelsLike {
+  //   return _localizedValues[locale.languageCode]!['feelsLike']!;
+  // }
 
-  String get minTemp {
-    return _localizedValues[locale.languageCode]!['minTemp']!;
-  }
+  // String get minTemp {
+  //   return _localizedValues[locale.languageCode]!['minTemp']!;
+  // }
 
-  String get maxTemp {
-    return _localizedValues[locale.languageCode]!['maxTemp']!;
+  // String get maxTemp {
+  //   return _localizedValues[locale.languageCode]!['maxTemp']!;
+  // }
+
+  // String get nfcView {
+  //   return _localizedValues[locale.languageCode]!['nfcView']!;
+  // }
+
+  String translate(String key) {
+    return _localizedValues[locale.languageCode]?[key] ?? key;
   }
 }
 

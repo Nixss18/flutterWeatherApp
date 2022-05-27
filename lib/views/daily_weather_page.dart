@@ -9,11 +9,14 @@ import 'package:weather_app/favorites/favorite_provide.dart';
 import 'package:weather_app/main.dart';
 import 'package:weather_app/themes/prefs.dart';
 import 'package:weather_app/search/search_city.dart';
+import 'package:weather_app/views/nfc_view.dart';
 import 'package:weather_app/views/second_screen.dart';
 import 'package:weather_app/views/settings_view.dart';
 import 'package:weather_app/api/weather.dart';
+import 'package:weather_app/views/switches.dart';
 import '../localizations/loaclization.dart';
 import '../search/search_city.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 
 class DailyWeatherPage extends StatefulWidget {
   const DailyWeatherPage({Key? key}) : super(key: key);
@@ -49,7 +52,7 @@ class _DailyWeatherPageState extends State<DailyWeatherPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.title),
+        title: Text(AppLocalizations.of(context).translate("weatherAppTitle")),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -145,6 +148,16 @@ class _DailyWeatherPageState extends State<DailyWeatherPage>
             title: Text("Settings"),
             onTap: _openSettingView,
           ),
+          ListTile(
+            leading: Icon(Icons.nfc),
+            title: Text("NFC"),
+            onTap: _openNFCView,
+          ),
+          ListTile(
+            leading: Icon(Icons.switch_left),
+            title: Text("Switches"),
+            onTap: _openSwitchesView,
+          ),
         ],
       )),
     );
@@ -161,22 +174,22 @@ class _DailyWeatherPageState extends State<DailyWeatherPage>
             Image.network(
                 'http://openweathermap.org/img/wn/${_currentWeather.iconList!.icons!.first.iconName}@2x.png'),
           Text(
-            "${AppLocalizations.of(context)!.cityName}, ${_currentWeather.cityName}",
+            "${AppLocalizations.of(context).translate('cityName')}, ${_currentWeather.cityName}",
             style: const TextStyle(fontFamily: 'Schyler', fontSize: 24),
           ),
           Text(
-            "${AppLocalizations.of(context)!.temperature}, ${_currentWeather.main?.temp}",
+            "${AppLocalizations.of(context).translate('temperature')}, ${_currentWeather.main?.temp}",
             style: const TextStyle(fontFamily: 'Schyler', fontSize: 24),
           ),
           Text(
-            "${AppLocalizations.of(context)!.feelsLike}, ${_currentWeather.main?.feelsLike}",
+            "${AppLocalizations.of(context).translate('feelsLike')}, ${_currentWeather.main?.feelsLike}",
             style: const TextStyle(fontFamily: 'Koulen', fontSize: 24),
           ),
           Text(
-              "${AppLocalizations.of(context)!.minTemp}, ${_currentWeather.main?.tempMin}",
+              "${AppLocalizations.of(context).translate('minTemp')}, ${_currentWeather.main?.tempMin}",
               style: const TextStyle(fontFamily: 'Koulen', fontSize: 20)),
           Text(
-              "${AppLocalizations.of(context)!.minTemp} ${_currentWeather.main?.tempMax}",
+              "${AppLocalizations.of(context).translate('maxTemp')} ${_currentWeather.main?.tempMax}",
               style: const TextStyle(fontFamily: 'Koulen', fontSize: 20)),
         ],
       ),
@@ -191,6 +204,16 @@ class _DailyWeatherPageState extends State<DailyWeatherPage>
   void _openSettingView() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const SettingsScreen()));
+  }
+
+  void _openNFCView() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const NfcScreen()));
+  }
+
+  void _openSwitchesView() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const SwitchesScreen()));
   }
 
   void _searchCity() async {
